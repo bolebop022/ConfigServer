@@ -1,5 +1,7 @@
 package org.blindustries;
 
+import java.util.logging.Level;
+
 public class Main {
     public static void main(String[] args) {
         final int DEFAULT_PORT = 8888;
@@ -7,8 +9,14 @@ public class Main {
 
         try {
             ConfigServer server = new ConfigServer(port);
-        } catch (Exception e){
+            server.start();
 
+
+            Runtime.getRuntime().addShutdownHook( new Thread(server::stop));
+
+            ConfigLogger.getInstance().LOGGER.info("Configuration server is running on port " + port);
+        } catch (Exception e){
+            ConfigLogger.getInstance().LOGGER.log(Level.SEVERE,"Failed to start the configuration server", e);
         }
 
     }

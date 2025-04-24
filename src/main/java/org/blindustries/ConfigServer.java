@@ -70,6 +70,16 @@ public class ConfigServer {
         }
 
     }
+    public void start(){
+        server.start();
+        ConfigLogger.getInstance().LOGGER.info("Configuration server started");
+    }
+
+    public  void stop(){
+        server.stop(0);
+        ConfigLogger.getInstance().LOGGER.info("Configuration server stopped");
+    }
+
     private void createSampleConfig(File configDir){
 
     }
