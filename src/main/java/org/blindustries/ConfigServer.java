@@ -14,8 +14,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ConfigServer {
-    private static final Logger LOGGER = Logger.getLogger(ConfigServer.class.getName());
-    private static final int DEFAULT_PORT = 8888;
+
+
     private static final String CONFIG_DIR = "config";
 
     private final HttpServer server;
@@ -28,7 +28,7 @@ public class ConfigServer {
 
         loadConfigurations();
 
-        LOGGER.info("Configuration server initialized on port " + port);
+        ConfigLogger.getInstance().LOGGER.info("Configuration server initialized on port " + port);
     }
 
     private void loadConfigurations(){
@@ -61,12 +61,12 @@ public class ConfigServer {
                     }
 
                     appConfigs.put(appName, appConfig);
-                    LOGGER.info("Loaded configuration for application: " + appName);
+                    ConfigLogger.getInstance().LOGGER.info("Loaded configuration for application: " + appName);
 
                 }
             }
         } catch (IOException e){
-            LOGGER.log(Level.SEVERE, "Failed to load configuration files", e);
+            ConfigLogger.getInstance().LOGGER.log(Level.SEVERE, "Failed to load configuration files", e);
         }
 
     }
