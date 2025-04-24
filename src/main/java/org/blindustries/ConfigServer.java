@@ -19,7 +19,12 @@ public class ConfigServer {
     private static final String CONFIG_DIR = "config";
 
     private final HttpServer server;
-    private final Map<String, Map<String, String>> appConfigs = new HashMap<>();
+
+    public static Map<String, Map<String, String>> getAppConfigs() {
+        return appConfigs;
+    }
+
+    private static final Map<String, Map<String, String>> appConfigs = new HashMap<>();
 
     public ConfigServer(int port) throws IOException {
         server = HttpServer.create(new InetSocketAddress(port), 0);

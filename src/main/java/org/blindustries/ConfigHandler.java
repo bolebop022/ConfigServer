@@ -6,6 +6,7 @@ import com.sun.net.httpserver.HttpHandler;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
 
 public class ConfigHandler implements HttpHandler {
     @Override
@@ -18,6 +19,22 @@ public class ConfigHandler implements HttpHandler {
             sendResponse(exchange, 400, "Invalid request. Use /config/{appName}");
             return;
         }
+
+        String appName = pathParts[2];
+        Map<String, String> config = ConfigServer.getAppConfigs().get(appName);
+
+        if (config == null){
+            sendResponse(exchange, 404, "Configuration not found for application: " + appName);
+            return;
+        }
+
+        StringBuilder jsonBuilder = new StringBuilder("{\n");
+        config.forEach((key, value) ->
+                jsonBuilder.append("  \"").append(key).append("\": \"")
+                        .append(value).append("\",\n"));
+        String json = jsonBuilder.substring(0, jsonBuilder.length() - 2) + "\n}";
+        exchange.getResponseHeaders().set("Content-Type", "application/json");
+        sendResponse(exchange, 200, json);;
     }
 
     private void sendResponse(HttpExchange exchange, int statusCode, String response) throws IOException {
